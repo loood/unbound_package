@@ -6,7 +6,7 @@ DIST := jammy
 all: $(DIST)
 
 jammy: clean
-	DISTRO_NAME=ubuntu DISTRO_CODENAME=jammy DISTRO_VERSION=22.04 packer build packer.json
+	DISTRO_NAME=ubuntu DISTRO_CODENAME=jammy DISTRO_VERSION=22.04 packer build .
 
 clean:
 	@$(foreach dir,$(DIST), \
