@@ -1,0 +1,37 @@
+{
+  "min_packer_version": "1.10.0",
+  "variables": {
+    "distro_name": "{{env `DISTRO_NAME`}}",
+    "distro_version": "{{env `DISTRO_VERSION`}}",
+    "distro_codename": "{{env `DISTRO_CODENAME`}}",
+    "output_dir": "/workspace/dist/{{user `distro_codename`}}",
+    "source_dest": "/tmp/source"
+  },
+  "builders": [
+    {
+      "type": "docker",
+      "image": "{{user `distro_name`}}:{{user `distro_version`}}",
+      "privileged": true,
+      "discard": true,
+      "volumes": {  "{{pwd}}/": "/workspace"}
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "environment_vars": [
+	"DEBIAN_FRONTEND=noninteractive",
+        "DISTRO_NAME={{user `distro_name`}}",
+        "UBUNTU_RELVER={{user `distro_version`}}",
+        "UBUNTU_CODENAME={{user `distro_codename`}}",
+        "OUTPUT_DIR={{user `output_dir`}}",
+	"VENDOR='{{user `vendor`}}'"
+      ],
+      "scripts": [
+        "scripts/setup.sh",
+        "scripts/build.sh"
+      ]
+    }
+
+  ]
+}
